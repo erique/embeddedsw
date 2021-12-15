@@ -189,6 +189,8 @@ cp $BOARD_DIR/inbyte.c $BSP_DIR/libsrc/standalone/src/
 cp $BOARD_DIR/outbyte.c $BSP_DIR/libsrc/standalone/src/
 cp $BOARD_DIR/xcsudma_g.c $BSP_DIR/libsrc/csudma/src/
 cp $BOARD_DIR/xusbpsu_g.c $BSP_DIR/libsrc/usbpsu/src/
+cp $BOARD_DIR/xaxipmon_g.c $BSP_DIR/libsrc/axipmon/src/
+cp $BOARD_DIR/xzdma_g.c $BSP_DIR/libsrc/zdma/src/
 
 if [ $PROC == "a53" ]; then
 	cp ../misc/zcu102/a53/xipipsu_g.c $BSP_DIR/libsrc/ipipsu/src/
