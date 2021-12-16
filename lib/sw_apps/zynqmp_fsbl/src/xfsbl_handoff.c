@@ -42,6 +42,8 @@
 #include "xfsbl_image_header.h"
 #include "xfsbl_bs.h"
 
+#include "xuartps_hw.h"
+
 /************************** Constant Definitions *****************************/
 #define XFSBL_CPU_POWER_UP		(0x1U)
 #define XFSBL_CPU_SWRST			(0x2U)
@@ -551,6 +553,10 @@ void XFsbl_HandoffExit(u64 HandoffAddress, u32 Flags)
 	XFsbl_Out32(PMU_GLOBAL_GLOB_GEN_STORAGE5, RegVal);
 
 	XFsbl_Printf(DEBUG_GENERAL,"Exit from FSBL \n\r");
+#if defined(STDOUT_BASEADDRESS)
+	while( ! (Xil_In32((STDOUT_BASEADDRESS) + XUARTPS_SR_OFFSET) & (u32)XUARTPS_SR_TXEMPTY) )
+		;
+#endif
 
 	/**
 	 * Exit to handoff address
