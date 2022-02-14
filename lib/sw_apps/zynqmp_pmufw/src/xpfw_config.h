@@ -27,11 +27,11 @@ extern "C" {
 #endif
 
 #ifndef XPFW_DEBUG_ERROR_VAL
-#define XPFW_DEBUG_ERROR_VAL				(0U)
+#define XPFW_DEBUG_ERROR_VAL				(1U)
 #endif
 
 #ifndef XPFW_DEBUG_DETAILED_VAL
-#define XPFW_DEBUG_DETAILED_VAL				(0U)
+#define XPFW_DEBUG_DETAILED_VAL				(1U)
 #endif
 
 /**
@@ -183,11 +183,11 @@ extern "C" {
 #endif
 
 #ifndef XPU_INTR_DEBUG_PRINT_ENABLE_VAL
-#define	XPU_INTR_DEBUG_PRINT_ENABLE_VAL		(0U)
+#define	XPU_INTR_DEBUG_PRINT_ENABLE_VAL		(1U)
 #endif
 
 #ifndef PM_LOG_LEVEL_VAL
-#define	PM_LOG_LEVEL_VAL					(0U)
+#define	PM_LOG_LEVEL_VAL					(4U)
 #endif
 
 #ifndef IDLE_PERIPHERALS_VAL

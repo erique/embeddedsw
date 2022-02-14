@@ -736,6 +736,8 @@ static void PmMmioWrite(const PmMaster *const master, const u32 address,
 {
 	s32 status = XST_SUCCESS;
 
+	PmInfo("%s> PmMmioWrite(%08lx, %08lx, %08lx)\r\n", master->name, address, mask, value);
+
 	/* no bits to be updated */
 	if (0U == mask) {
 		goto done;
@@ -766,6 +768,8 @@ static void PmMmioRead(const PmMaster *const master, const u32 address)
 {
 	s32 status;
 	u32 value = 0;
+
+	PmInfo("%s> PmMmioRead(%08lx)\r\n", master->name, address);
 
 	/* Check access permissions */
 	if (false == PmGetMmioAccessRead(master, address)) {
@@ -846,6 +850,9 @@ static void PmFpgaLoad(const PmMaster *const master,
 	XFpga XFpgaInstance = {0U};
 	UINTPTR BitStreamAddr = ((u64)AddrHigh << 32)|AddrLow;
 
+	PmInfo("%s> PmFpgaLoad(%08lx.%08lx, %08lx, %08lx)\r\n", master->name,
+			AddrHigh, AddrLow, KeyAddr, Flags);
+
 #if defined (ENABLE_WDT) &&	\
 	(XPFW_CFG_PMU_FPGA_WDT_TIMEOUT > XPFW_CFG_PMU_DEFAULT_WDT_TIMEOUT)
 	PmNotifyR5AndModifyWdtTimeout(XPFW_CFG_PMU_FPGA_WDT_TIMEOUT,
@@ -889,6 +896,8 @@ static void PmFpgaGetStatus(const PmMaster *const master)
 	u32 Value = 0;
 	XFpga XFpgaInstance = {0U};
 
+	PmInfo("%s> PmFpgaGetStatus()\r\n", master->name);
+
 	Status = XFpga_Initialize(&XFpgaInstance);
 	if (XST_SUCCESS != (s32)Status) {
 		goto done;
@@ -926,6 +935,9 @@ static void PmFpgaRead(const PmMaster *const master,
 	u32 Value = 0U;
 	XFpga XFpgaInstance = {0U};
 	UINTPTR Address = ((u64)AddrHigh << 32U)|AddrLow;
+
+	PmInfo("%s> PmFpgaRead(%lu, %08lx.%08lx, %lu)\r\n", master->name,
+			Reg_Numframes, AddrHigh, AddrLow, Readback_Type);
 
 #if defined (ENABLE_WDT) &&	\
 	(XPFW_CFG_PMU_FPGA_WDT_TIMEOUT > XPFW_CFG_PMU_DEFAULT_WDT_TIMEOUT)
@@ -1171,6 +1183,8 @@ static void PmEfuseAccess(const PmMaster *const master,
  */
 static void PmGetChipid(const PmMaster *const master)
 {
+	PmInfo("%s> PmGetChipid()\r\n", master->name);
+
 	u32 idcode = XPfw_Read32(CSU_IDCODE);
 	u32 version = XPfw_Read32(CSU_VERSION);
 	u32 pl_init = XPfw_Read32(CSU_PCAP_STATUS_REG);

@@ -217,7 +217,7 @@ done:
 		PmSlaveClearAfterState(slave, oldState);
 	}
 	if (XST_SUCCESS == status) {
-		PmInfo("%s %d->%d\r\n", slave->node.name, oldState,
+		PmInfo(" pmufw> PmSlaveChangeState(%s %d->%d)\r\n", slave->node.name, oldState,
 		       slave->node.currState);
 	} else {
 		PmErr("#%d %s state#%u\r\n", status, slave->node.name,

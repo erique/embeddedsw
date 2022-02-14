@@ -219,7 +219,7 @@ static void PmPllRestoreContext(PmPll* const pll)
  */
 static void PmPllSuspend(PmPll* const pll)
 {
-	PmInfo("%s 1->0\r\n", pll->node.name);
+	PmInfo(" pmufw> PmPllSuspend(%s 1->0)\r\n", pll->node.name);
 
 	PmPllSaveContext(pll);
 
@@ -246,7 +246,7 @@ static s32 PmPllResume(PmPll* const pll)
 {
 	s32 status = XST_SUCCESS;
 
-	PmInfo("%s 0->1\r\n", pll->node.name);
+	PmInfo(" pmufw> PmPllResume(%s 0->1)\r\n", pll->node.name);
 
 	if (0U != (pll->flags & PM_PLL_CONTEXT_SAVED)) {
 		PmPllRestoreContext(pll);

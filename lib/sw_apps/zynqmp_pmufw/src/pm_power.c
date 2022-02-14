@@ -549,7 +549,7 @@ s32 PmPowerDown(PmPower* const power)
 	if (NULL != power->node.clocks) {
 		PmClockRelease(&power->node);
 	}
-	PmInfo("%s 1->0\r\n", power->node.name);
+	PmInfo(" pmufw> PmPowerDown(%s 1->0)\r\n", power->node.name);
 #ifdef DEBUG_MODE
 	if ((pmPowerIslandRpu_g.power.node.currState == PM_PWR_STATE_OFF) &&
                         (pmPowerDomainFpd_g.power.node.currState == PM_PWR_STATE_OFF)) {
@@ -608,7 +608,7 @@ static s32 PmPowerUp(PmPower* const power)
 	}
 #endif
 
-	PmInfo("%s 0->1\r\n", power->node.name);
+	PmInfo(" pmufw> PmPowerUp(%s 0->1)\r\n", power->node.name);
 
 	if (PM_PWR_STATE_ON == power->node.currState) {
 		goto done;
