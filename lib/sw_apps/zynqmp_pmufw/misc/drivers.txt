@@ -1,5 +1,4 @@
 avbuf
-canps
 csudma
 uartps
 ipipsu
@@ -16,3 +15,4 @@ zdma
 dpdma
 dppsu
 video_common
+spips
