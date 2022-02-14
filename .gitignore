@@ -1,0 +1,8 @@
+/lib/sw_apps/**/misc/*_bsp
+/lib/sw_apps/**/src/*.d
+/lib/sw_apps/**/src/*.o
+/lib/sw_apps/**/src/*.elf
+
+/lib/sw_apps/zynqmp_fsbl/src/dump
+
+/lib/sw_apps/zynqmp_pmufw/src/executable.bin
