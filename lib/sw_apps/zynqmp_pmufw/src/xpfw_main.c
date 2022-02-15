@@ -39,6 +39,56 @@ static void Assert_CallBack(const char8 *File, s32 Line)
 			PMU_LOCAL_PMU_SERV_ERR_FWERR0_MASK);
 }
 
+static void PSU_Mask_Write(unsigned long offset, unsigned long mask, unsigned long val)
+{
+	unsigned long RegVal = 0x0;
+
+	RegVal = Xil_In32(offset);
+	RegVal &= ~(mask);
+	RegVal |= (val & mask);
+	Xil_Out32(offset, RegVal);
+}
+
+static void XPfw_UART_Init()
+{
+#ifdef XPS_BOARD_KV260_SOM240_1_CONNECTOR_SOM240_SOM240_1_CONNECTOR
+
+    // Set up pin 36/37 (UART) pinmux
+    PSU_Mask_Write(IOU_SLCR_BASE+IOU_SLCR_MIO_PIN_36_OFFSET,   0x000000FEU, 0x000000C0U);
+    PSU_Mask_Write(IOU_SLCR_BASE+IOU_SLCR_MIO_PIN_37_OFFSET,   0x000000FEU, 0x000000C0U);
+    PSU_Mask_Write(IOU_SLCR_BASE+IOU_SLCR_MIO_MST_TRI1_OFFSET, 0x00000030U, 0x00000020U);
+
+    // Set up IOPLL
+    PSU_Mask_Write(CRL_APB_IOPLL_CFG,  0xFE7FEDEFU, 0x7E4B0C82U);
+    PSU_Mask_Write(CRL_APB_IOPLL_CTRL, 0x00717F00U, 0x00015A00U);
+    PSU_Mask_Write(CRL_APB_IOPLL_CTRL, 0x00000008U, 0x00000008U);
+    PSU_Mask_Write(CRL_APB_IOPLL_CTRL, 0x00000001U, 0x00000001U);
+    PSU_Mask_Write(CRL_APB_IOPLL_CTRL, 0x00000001U, 0x00000000U);
+
+    for (int i = 0; !(Xil_In32(CRL_APB_PLL_STATUS) & 0x00000001U); ++i) {
+		const int PSU_MASK_POLL_TIME = 1100000;
+        if (i == PSU_MASK_POLL_TIME)
+            return;
+    }
+
+    PSU_Mask_Write(CRL_APB_IOPLL_CTRL, 0x00000008U, 0x00000000U);
+    PSU_Mask_Write(CRL_APB_IOPLL_TO_FPD_CTRL, 0x00003F00U, 0x00000300U);
+
+    // Use IOPLL for UART1
+    PSU_Mask_Write(CRL_APB_UART1_REF_CTRL, 0x013F3F07U, 0x01010F00U);
+
+    // Reset UART1
+    PSU_Mask_Write(CRL_APB_RST_LPD_IOU2, 0x00000004U, 0x00000000U);
+
+    // Set up UART1
+    PSU_Mask_Write(UART1_BAUD_RATE_DIVIDER_REG0, 0x000000FFU, 0x00000006U);
+    PSU_Mask_Write(UART1_BAUD_RATE_GEN_REG0, 0x0000FFFFU, 0x0000007CU);
+    PSU_Mask_Write(UART1_CONTROL_REG0, 0x000001FFU, 0x00000017U);
+    PSU_Mask_Write(UART1_MODE_REG0, 0x000003FFU, 0x00000020U);
+
+#endif
+}
+
 XStatus XPfw_Main(void)
 {
 	XStatus Status;
@@ -49,6 +99,8 @@ XStatus XPfw_Main(void)
 	u32 ControlWord;
 	u32 RegVal;
 #endif
+
+	XPfw_UART_Init();
 
 	/* Start the Init Routine */
 	XPfw_Printf(DEBUG_PRINT_ALWAYS,"PMU Firmware %s\t%s   %s\r\n",

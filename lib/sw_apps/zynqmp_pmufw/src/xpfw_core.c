@@ -98,6 +98,11 @@ XStatus XPfw_CoreConfigure(void)
 		XPfw_Write32(PMU_LMB_BRAM_ECC_IRQ_EN_REG, PMU_LMB_BRAM_CE_MASK);
 		XPfw_InterruptEnable(PMU_IOMODULE_IRQ_ENABLE_CORRECTABLE_ECC_MASK);
 
+#if defined(STDOUT_BASEADDRESS)
+	while( ! (Xil_In32((STDOUT_BASEADDRESS) + XUARTPS_SR_OFFSET) & (u32)XUARTPS_SR_TXEMPTY) )
+		;
+#endif
+
 		XPfw_InterruptStart();
 		/* Set the FW_IS_PRESENT bit to flag that PMUFW is up and ready */
 		XPfw_RMW32(PMU_GLOBAL_GLOBAL_CNTRL, PMU_GLOBAL_GLOBAL_CNTRL_FW_IS_PRESENT_MASK,
